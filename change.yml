@@ -1,0 +1,20 @@
+- name: Change Nginx listening port
+  hosts: nginx
+  become: true
+
+  tasks:
+    - name: Modify Nginx configuration file
+      replace:
+        path: /etc/nginx/sites-enabled/default
+        regexp: 'listen\s+80\s+default_server;'
+        replace: 'listen 8080 default_server;'
+      notify: Restart Nginx
+
+  handlers:
+    - name: Restart Nginx
+      systemd:
+        name: nginx
+        state: restarted 
+        
+
+        
